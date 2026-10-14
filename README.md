@@ -1,6 +1,7 @@
 # SK BF26 | Página de Captura não alunos — Black Contábil Vitalícia
 
-Página estática. Não precisa de build no deploy: o CSS já está compilado em `css/styles.css`.
+Página estática. Não precisa de build no deploy: o CSS já está compilado em `black/css/styles.css`.
+No ar em https://stephaniekalynka.com/black (o projeto `lp-black-26-alunos`, dono do domínio, faz rewrite de `/black` para este deploy).
 Página de base própria, com `noindex` (meta, header `X-Robots-Tag` e `robots.txt`).
 
 ## 1. Subir no GitHub
@@ -23,14 +24,13 @@ Página de base própria, com `noindex` (meta, header `X-Robots-Tag` e `robots.t
 
 | O quê | Onde |
 |---|---|
-| Destino do formulário (webhook) | `js/main.js`, linha 1: `const ENDPOINT = '...'` |
-| Link do Grupo VIP do WhatsApp | `js/main.js`, linha 2: `const GRUPO_VIP = '...'` |
-| Data e hora da revelação | `js/main.js`, linha 3: `const REVELACAO = '2026-11-04T20:00:00-03:00'` |
-| Destino depois do cadastro | `js/main.js`, linha 4: `const DESTINO_SUCESSO = 'obrigado'` |
-| Destino da página depois da revelação | `js/main.js`, função `renderContador`, comentário `location.replace(...)` |
-| Rodapé (razão social, CNPJ, política, contato) | `index.html`, bloco `<!-- 9-rodape -->` |
-| URL da política de privacidade (microcópia) | `index.html`, `<a class="form__link" href="#">` nos dois formulários |
-| Domínio | `index.html`, `<head>`: `canonical`, `og:url` e `og:image` (`SEU-DOMINIO.com.br`) |
+| Destino do formulário (webhook) | `black/js/main.js`, linha 1: `const ENDPOINT = '...'` |
+| Link do Grupo VIP do WhatsApp | `black/js/main.js`, linha 2: `const GRUPO_VIP = '...'` |
+| Data e hora da revelação | `black/js/main.js`, linha 3: `const REVELACAO = '2026-11-04T20:00:00-03:00'` |
+| Destino depois do cadastro | `black/js/main.js`, linha 4: `const DESTINO_SUCESSO = '/black/obrigado'` |
+| Destino da página depois da revelação | `black/js/main.js`, função `renderContador`, comentário `location.replace(...)` |
+| Rodapé (razão social, CNPJ, política, contato) | `black/index.html`, bloco `<!-- 9-rodape -->` |
+| URL da política de privacidade (microcópia) | `black/index.html`, `<a class="form__link" href="#">` nos dois formulários |
 | Cores e fontes | `src/input.css`, bloco `:root` (depois recompile) |
 
 O webhook recebe `POST` com `Content-Type: application/json` e precisa aceitar CORS do seu domínio
@@ -53,7 +53,7 @@ O Meta Pixel não vem instalado. Se você instalar, o evento `Lead` já dispara 
 
 ## 4. Recompilar o CSS
 
-Depois de mexer em `index.html`, `design-system.html` ou `src/input.css`:
+Depois de mexer em `black/index.html`, `design-system.html` ou `src/input.css`:
 
     npm install && npm run build
 

@@ -1,7 +1,7 @@
 const ENDPOINT = 'COLE_AQUI_A_URL_DO_WEBHOOK';
 const GRUPO_VIP = 'COLE_AQUI_O_LINK_DO_GRUPO'; // [FALTA: link do Grupo VIP de não alunos]
 const REVELACAO = '2026-11-04T20:00:00-03:00';
-const DESTINO_SUCESSO = 'obrigado'; // página de obrigado (Vercel cleanUrls)
+const DESTINO_SUCESSO = '/black/obrigado'; // página de obrigado (Vercel cleanUrls)
 
 document.documentElement.classList.add('js');
 
