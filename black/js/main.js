@@ -1,4 +1,4 @@
-const ENDPOINT = 'COLE_AQUI_A_URL_DO_WEBHOOK';
+const ENDPOINT = 'https://n8n.grupohbdigital.com.br/webhook/black-do-milhao';
 const GRUPO_VIP = 'https://sndflw.com/i/mvZaITPIGsW5WCkUo0Yl';
 const REVELACAO = '2026-11-04T20:00:00-03:00';
 const DESTINO_SUCESSO = '/black/obrigado'; // página de obrigado (Vercel cleanUrls)
