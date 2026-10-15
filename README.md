@@ -27,6 +27,7 @@ Página de base própria, com `noindex` (meta, header `X-Robots-Tag` e `robots.t
 | Destino do formulário (webhook) | `black/js/main.js`, linha 1: `const ENDPOINT = '...'` |
 | Link do Grupo VIP do WhatsApp | `black/js/main.js`, linha 2: `const GRUPO_VIP = '...'` |
 | Data e hora da revelação | `black/js/main.js`, linha 3: `const REVELACAO = '2026-11-04T20:00:00-03:00'` |
+| Nome e ID do formulário | `black/js/main.js`, `FORM_ID` e `FORM_NOME` (logo abaixo do `DESTINO_SUCESSO`) |
 | Destino depois do cadastro | `black/js/main.js`, linha 4: `const DESTINO_SUCESSO = '/black/obrigado'` |
 | Destino da página depois da revelação | `black/js/main.js`, função `renderContador`, comentário `location.replace(...)` |
 | Rodapé (razão social, CNPJ, política, contato) | `black/index.html`, bloco `<!-- 9-rodape -->` |
@@ -42,13 +43,20 @@ Payload enviado:
 {
   "email": "aluna@email.com",
   "whatsapp": "5511912345678",
-  "origem": "sk-bf26-captura-alunos",
-  "url": "https://.../?utm_source=...",
-  "enviado_em": "2026-09-20T13:00:00.000Z",
+  "form_id": "sk-bf26-captura-nao-alunos",
+  "form_nome": "Black Contábil Vitalícia | Captura Não Alunos",
+  "form_local": "topo",
+  "data": "15/10/2026",
+  "hora": "14:32:05",
+  "enviado_em": "2026-10-15T17:32:05.000Z",
+  "page_url": "https://stephaniekalynka.com/black?utm_source=...",
   "utm_source": "", "utm_medium": "", "utm_campaign": "", "utm_content": "", "utm_term": "", "utm_id": "",
   "fbclid": "", "gclid": "", "gbraid": "", "wbraid": "", "ttclid": "", "msclkid": "", "src": "", "sck": ""
 }
 ```
+
+`data` e `hora` estão no horário de Brasília; `enviado_em` é o mesmo instante em UTC. `form_local` diz
+qual dos dois formulários da página foi usado (`topo` ou `final`). `page_url` é a URL inteira da página.
 
 Essas chaves vão sempre (vazias se não vierem). Qualquer outra `utm_*` da URL (ex.: `utm_adset`) entra
 também, com o nome em minúsculas. O rastreio fica salvo no navegador por 30 dias: quem chega pelo

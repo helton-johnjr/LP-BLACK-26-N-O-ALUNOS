@@ -2,6 +2,9 @@ const ENDPOINT = 'https://n8n.grupohbdigital.com.br/webhook/black-do-milhao';
 const GRUPO_VIP = 'https://sndflw.com/i/mvZaITPIGsW5WCkUo0Yl';
 const REVELACAO = '2026-11-04T20:00:00-03:00';
 const DESTINO_SUCESSO = '/black/obrigado'; // página de obrigado (Vercel cleanUrls)
+const FORM_ID = 'sk-bf26-captura-nao-alunos';
+const FORM_NOME = 'Black Contábil Vitalícia | Captura Não Alunos';
+const FUSO = 'America/Sao_Paulo'; // data e hora do lead no horário de Brasília
 
 document.documentElement.classList.add('js');
 
@@ -206,12 +209,17 @@ function iniciarFormulario(form) {
     botao.setAttribute('aria-busy', 'true');
     rotulo.textContent = 'ENVIANDO…';
 
+    const agora = new Date();
     const payload = {
       email: email.value.trim(),
       whatsapp: `55${digitosWhatsApp(whatsapp.value)}`,
-      origem: 'sk-bf26-captura-nao-alunos',
-      url: window.location.href,
-      enviado_em: new Date().toISOString(),
+      form_id: FORM_ID,
+      form_nome: FORM_NOME,
+      form_local: form.dataset.form, // qual dos dois formulários da página: topo ou final
+      data: agora.toLocaleDateString('pt-BR', { timeZone: FUSO }),
+      hora: agora.toLocaleTimeString('pt-BR', { timeZone: FUSO, hour12: false }),
+      enviado_em: agora.toISOString(),
+      page_url: window.location.href,
       ...lerUtms(),
     };
 
