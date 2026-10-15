@@ -104,10 +104,47 @@ function marcarErro(input, mensagem) {
   if (erro) erro.textContent = mensagem || '';
 }
 
+/* ---------- Rastreio: todas as utm_* e ids de clique dos anúncios ---------- */
+// estas chaves vão sempre no payload (vazias se não vierem), para o webhook ter um formato fixo;
+// qualquer outra utm_* que vier na URL (utm_id, utm_adset...) entra também
+const RASTREIO_FIXO = [
+  'utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'utm_id',
+  'fbclid', 'gclid', 'gbraid', 'wbraid', 'ttclid', 'msclkid', 'src', 'sck',
+];
+const CHAVE_RASTREIO = 'sk-bf26-rastreio';
+const VALIDADE_RASTREIO = 30 * 86400000; // 30 dias
+
+function rastreioDaUrl() {
+  const achados = {};
+  new URLSearchParams(window.location.search).forEach((valor, chave) => {
+    const nome = chave.toLowerCase();
+    if (valor && (nome.startsWith('utm_') || RASTREIO_FIXO.includes(nome))) achados[nome] = valor;
+  });
+  return achados;
+}
+
+// a URL atual manda; sem nada na URL, vale o último rastreio salvo (quem saiu e voltou depois)
+function lerRastreio() {
+  let rastreio = rastreioDaUrl();
+  try {
+    if (Object.keys(rastreio).length) {
+      localStorage.setItem(CHAVE_RASTREIO, JSON.stringify({ salvo_em: Date.now(), rastreio }));
+    } else {
+      const salvo = JSON.parse(localStorage.getItem(CHAVE_RASTREIO));
+      if (salvo && Date.now() - salvo.salvo_em < VALIDADE_RASTREIO) rastreio = salvo.rastreio;
+    }
+  } catch (erro) { /* sem storage: fica só com o que veio na URL */ }
+  return rastreio;
+}
+
 function lerUtms() {
-  const params = new URLSearchParams(window.location.search);
-  return ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
-    .reduce((acc, chave) => ({ ...acc, [chave]: params.get(chave) || '' }), {});
+  const vazios = Object.fromEntries(RASTREIO_FIXO.map((chave) => [chave, '']));
+  return { ...vazios, ...lerRastreio() };
+}
+
+function destinoComRastreio() {
+  const query = new URLSearchParams(lerRastreio()).toString();
+  return query ? `${DESTINO_SUCESSO}?${query}` : DESTINO_SUCESSO;
 }
 
 function iniciarFormulario(form) {
@@ -148,7 +185,7 @@ function iniciarFormulario(form) {
     sucesso.querySelector('[data-success-title]').focus({ preventScroll: true });
     if (typeof window.fbq === 'function') window.fbq('track', 'Lead');
     // o lead segue para a página de obrigado, que leva ao grupo
-    setTimeout(() => { window.location.href = DESTINO_SUCESSO; }, 1500);
+    setTimeout(() => { window.location.href = destinoComRastreio(); }, 1500);
   }
 
   form.addEventListener('submit', async (ev) => {
@@ -238,6 +275,7 @@ function iniciarCtaFixo() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  lerRastreio(); // salva já na chegada, não só no envio
   if (renderContador()) contadorId = setInterval(renderContador, 1000);
   document.querySelectorAll('[data-group-link]').forEach((link) => { link.href = GRUPO_VIP; });
   document.querySelectorAll('[data-form]').forEach(iniciarFormulario);

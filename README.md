@@ -45,9 +45,15 @@ Payload enviado:
   "origem": "sk-bf26-captura-alunos",
   "url": "https://.../?utm_source=...",
   "enviado_em": "2026-09-20T13:00:00.000Z",
-  "utm_source": "", "utm_medium": "", "utm_campaign": "", "utm_content": "", "utm_term": ""
+  "utm_source": "", "utm_medium": "", "utm_campaign": "", "utm_content": "", "utm_term": "", "utm_id": "",
+  "fbclid": "", "gclid": "", "gbraid": "", "wbraid": "", "ttclid": "", "msclkid": "", "src": "", "sck": ""
 }
 ```
+
+Essas chaves vão sempre (vazias se não vierem). Qualquer outra `utm_*` da URL (ex.: `utm_adset`) entra
+também, com o nome em minúsculas. O rastreio fica salvo no navegador por 30 dias: quem chega pelo
+anúncio, sai e volta depois pelo link sem UTM ainda é atribuído à campanha. Ele também segue na URL da
+página de obrigado (`/black/obrigado?utm_source=...`).
 
 O Meta Pixel não vem instalado. Se você instalar, o evento `Lead` já dispara no sucesso.
 
