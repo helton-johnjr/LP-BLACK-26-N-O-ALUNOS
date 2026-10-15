@@ -151,14 +151,12 @@ function destinoComRastreio() {
 }
 
 function iniciarFormulario(form) {
-  const card = form.closest('[data-form-card]');
   const email = form.querySelector('[name="email"]');
   const whatsapp = form.querySelector('[name="whatsapp"]');
   const honeypot = form.querySelector('[name="website"]');
   const botao = form.querySelector('[data-submit]');
   const rotulo = form.querySelector('[data-submit-label]');
   const status = form.querySelector('[data-status]');
-  const sucesso = card.querySelector('[data-success]');
   const textoBotao = rotulo.textContent;
 
   whatsapp.addEventListener('input', () => {
@@ -182,14 +180,15 @@ function iniciarFormulario(form) {
     botao.style.width = '';
   }
 
-  function mostrarSucesso() {
-    form.hidden = true;
-    sucesso.hidden = false;
-    sucesso.querySelector('[data-success-title]').focus({ preventScroll: true });
+  // cadastro aceito: vai direto para a página de obrigado, que leva ao grupo
+  // (o botão segue em "ENVIANDO…" até a página trocar)
+  function irParaObrigado() {
     if (typeof window.fbq === 'function') window.fbq('track', 'Lead');
-    // o lead segue para a página de obrigado, que leva ao grupo
-    setTimeout(() => { window.location.href = destinoComRastreio(); }, 1500);
+    window.location.href = destinoComRastreio();
   }
+
+  // quem volta do obrigado pelo botão "voltar" encontra o formulário destravado
+  window.addEventListener('pageshow', (ev) => { if (ev.persisted) destravarBotao(); });
 
   form.addEventListener('submit', async (ev) => {
     ev.preventDefault();
@@ -233,7 +232,7 @@ function iniciarFormulario(form) {
         signal: controle.signal,
       });
       if (!resposta.ok) throw new Error(`HTTP ${resposta.status}`);
-      mostrarSucesso();
+      irParaObrigado();
     } catch (erro) {
       status.textContent = MENSAGENS.envio;
       destravarBotao();
