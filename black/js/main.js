@@ -184,6 +184,8 @@ function iniciarFormulario(form) {
   // (o botão segue em "ENVIANDO…" até a página trocar)
   function irParaObrigado() {
     if (typeof window.fbq === 'function') window.fbq('track', 'Lead');
+    // evento para o Google Tag Manager (GTM-TC2WPHZ9): gatilho de conversão "generate_lead"
+    (window.dataLayer = window.dataLayer || []).push({ event: 'generate_lead', form_id: FORM_ID, form_local: form.dataset.form });
     window.location.href = destinoComRastreio();
   }
 
