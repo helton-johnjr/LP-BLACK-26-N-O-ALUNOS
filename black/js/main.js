@@ -1,5 +1,5 @@
 const ENDPOINT = 'https://n8n.grupohbdigital.com.br/webhook/black-do-milhao';
-const GRUPO_VIP = 'https://sndflw.com/i/mvZaITPIGsW5WCkUo0Yl';
+const GRUPO_VIP = 'https://chat.whatsapp.com/BW0kHJdkvMLCwLrH6RlNNa';
 const REVELACAO = '2026-11-04T20:00:00-03:00';
 const DESTINO_SUCESSO = '/black/obrigado'; // página de obrigado (Vercel cleanUrls)
 const FORM_ID = 'sk-bf26-captura-nao-alunos';
